@@ -50,6 +50,7 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
+        /** @var Tasks $task */
         $task = Tasks::where('id', '=', $id)->first();
 
         if(!$task){
@@ -62,14 +63,15 @@ class TasksController extends Controller
         return $this->successApiResponse($task, 'Task success updated');
     }
 
+
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function destroy($id)
     {
+        /** @var Tasks $task */
         $task = Tasks::find($id);
 
         if(!$task) {

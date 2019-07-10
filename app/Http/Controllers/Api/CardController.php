@@ -29,8 +29,11 @@ class CardController extends Controller
      */
     public function store(CardRequestCreate $request)
     {
+            $userId = Auth::id();
+            $newCardData = $request->all();
             $card = new Card();
-            $card->fill($request->all());
+            $newCardData['user_id'] = $userId;
+            $card->fill($newCardData);
             $card->save();
 
             return $this->successApiResponse($card, 'Card success created');

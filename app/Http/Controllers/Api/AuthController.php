@@ -21,13 +21,15 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
+        /** @var User $user */
         $user = new User();
         $data = $request;
         $data['password'] = Hash::make($data['password']);
         $data['confirmed_token'] =  str_random(20);
         $user->fill($data->all());
-        $user->save();
-        dispatch(new SendUserRegisterEmail($user));
+        if($user->save()){
+            dispatch(new SendUserRegisterEmail($user));
+        }
         return $this->successApiResponse();
     }
 

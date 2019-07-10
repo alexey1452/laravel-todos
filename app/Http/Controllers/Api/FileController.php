@@ -38,6 +38,7 @@ class FileController extends Controller
         $fileName = str_random(20) . $mimeType;
 
         if($image->save(public_path("/files/$fileName"))) {
+            /** @var File $avatar */
             $avatar = File::create([
                     'owner_id' => $user->id,
                     'url' => "/files/$fileName",
@@ -55,10 +56,12 @@ class FileController extends Controller
     /**
      * @param $fileId
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function deleteFile($fileId){
         /** @var User $user */
         $user = Auth::user();
+        /** @var File $file */
         $file = File::find($fileId);
 
         if(!$file){

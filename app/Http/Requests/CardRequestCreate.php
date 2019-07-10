@@ -26,7 +26,6 @@ class CardRequestCreate extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|integer',
             'name' => 'bail|required|max:255',
             'description' => 'bail|sometimes|max:500',
             'image_id' => 'sometimes|integer|max:500',

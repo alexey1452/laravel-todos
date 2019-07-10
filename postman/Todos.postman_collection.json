@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "980d9718-c079-4624-9593-057b77ee79f0",
+		"_postman_id": "fb0cc76b-8acf-4791-ab7f-35c955f50fb4",
 		"name": "Todos",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -27,12 +27,15 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"first_name\": \"Test\",\n\t\"last_name\": \"Register\",\n\t\"password\": \"secret\",\n\t\"email\": \"test12@email.com\"\n}"
+							"raw": "{\n\t\"first_name\": \"Test\",\n\t\"last_name\": \"Register\",\n\t\"password\": \"secret\",\n\t\"email\": \"test@email.com\"\n}"
 						},
 						"url": {
-							"raw": "{{APP_URL}}register",
+							"raw": "{{APP_URL}}/register",
 							"host": [
-								"{{APP_URL}}register"
+								"{{APP_URL}}"
+							],
+							"path": [
+								"register"
 							]
 						}
 					},
@@ -58,7 +61,7 @@
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
+								"value": "application/json",
 								"type": "text"
 							},
 							{
@@ -68,24 +71,16 @@
 							}
 						],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "email",
-									"value": "test@test.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "123456",
-									"type": "text"
-								}
-							]
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"test@mail.com\",\n\t\"password\": \"secret\"\n}"
 						},
 						"url": {
-							"raw": "{{APP_URL}}login",
+							"raw": "{{APP_URL}}/login",
 							"host": [
-								"{{APP_URL}}login"
+								"{{APP_URL}}"
+							],
+							"path": [
+								"login"
 							]
 						}
 					},
@@ -118,11 +113,12 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{APP_URL}}user/me",
+							"raw": "{{APP_URL}}/user/me",
 							"host": [
-								"{{APP_URL}}user"
+								"{{APP_URL}}"
 							],
 							"path": [
+								"user",
 								"me"
 							]
 						}
@@ -151,11 +147,12 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{APP_URL}}verify/japxdusqB6syi4GMB6Y1",
+							"raw": "{{APP_URL}}/verify/japxdusqB6syi4GMB6Y1",
 							"host": [
-								"{{APP_URL}}verify"
+								"{{APP_URL}}"
 							],
 							"path": [
+								"verify",
 								"japxdusqB6syi4GMB6Y1"
 							]
 						}
@@ -189,11 +186,12 @@
 							"raw": "{\n\t\"first_name\": \"dfsfsdf\",\n\t\"last_name\": \"dfdgdfe4\"\n}"
 						},
 						"url": {
-							"raw": "{{APP_URL}}user/me",
+							"raw": "{{APP_URL}}/user/me",
 							"host": [
-								"{{APP_URL}}user"
+								"{{APP_URL}}"
 							],
 							"path": [
+								"user",
 								"me"
 							]
 						}
@@ -239,18 +237,16 @@
 									"key": "description",
 									"value": "decription card 1",
 									"type": "text"
-								},
-								{
-									"key": "user_id",
-									"value": "1",
-									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{APP_URL}}card",
+							"raw": "{{APP_URL}}/card",
 							"host": [
-								"{{APP_URL}}card"
+								"{{APP_URL}}"
+							],
+							"path": [
+								"card"
 							]
 						}
 					},
@@ -294,11 +290,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{APP_URL}}card/1",
+							"raw": "{{APP_URL}}/card/1",
 							"host": [
-								"{{APP_URL}}card"
+								"{{APP_URL}}"
 							],
 							"path": [
+								"card",
 								"1"
 							]
 						}
@@ -338,11 +335,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{APP_URL}}card/1",
+							"raw": "{{APP_URL}}/card/1",
 							"host": [
-								"{{APP_URL}}card"
+								"{{APP_URL}}"
 							],
 							"path": [
+								"card",
 								"1"
 							]
 						}
@@ -376,11 +374,12 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{APP_URL}}card/1",
+							"raw": "{{APP_URL}}/card/1",
 							"host": [
-								"{{APP_URL}}card"
+								"{{APP_URL}}"
 							],
 							"path": [
+								"card",
 								"1"
 							]
 						}
@@ -414,9 +413,12 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{APP_URL}}card",
+							"raw": "{{APP_URL}}/card",
 							"host": [
-								"{{APP_URL}}card"
+								"{{APP_URL}}"
+							],
+							"path": [
+								"card"
 							]
 						}
 					},
@@ -454,9 +456,12 @@
 							"raw": "{\n\t\"name\": \"sdfsdfsdf\",\n\t\"card_id\": \"1\"\n}"
 						},
 						"url": {
-							"raw": "{{APP_URL}}task",
+							"raw": "{{APP_URL}}/task",
 							"host": [
-								"{{APP_URL}}task"
+								"{{APP_URL}}"
+							],
+							"path": [
+								"task"
 							]
 						}
 					},
@@ -470,7 +475,7 @@
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
+								"value": "application/json",
 								"type": "text"
 							},
 							{
@@ -486,12 +491,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": ""
+							"raw": "{\n\t\"name\": \"sdfsdfsfsdfdsdf\"\n}"
 						},
 						"url": {
-							"raw": "{{APP_URL}}task",
+							"raw": "{{APP_URL}}/task/2",
 							"host": [
-								"{{APP_URL}}task"
+								"{{APP_URL}}"
+							],
+							"path": [
+								"task",
+								"2"
 							]
 						}
 					},
@@ -524,9 +533,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{APP_URL}}task",
+							"raw": "{{APP_URL}}/task/1",
 							"host": [
-								"{{APP_URL}}task"
+								"{{APP_URL}}"
+							],
+							"path": [
+								"task",
+								"1"
 							]
 						}
 					},
@@ -562,9 +575,12 @@
 							"raw": "{\n\t\"card_id\": 1\n}"
 						},
 						"url": {
-							"raw": "{{APP_URL}}task",
+							"raw": "{{APP_URL}}/task",
 							"host": [
-								"{{APP_URL}}task"
+								"{{APP_URL}}"
+							],
+							"path": [
+								"task"
 							]
 						}
 					},
@@ -608,11 +624,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{APP_URL}}file/upload",
+							"raw": "{{APP_URL}}/file/upload",
 							"host": [
-								"{{APP_URL}}file"
+								"{{APP_URL}}"
 							],
 							"path": [
+								"file",
 								"upload"
 							]
 						}
@@ -646,11 +663,12 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{APP_URL}}file/remove/33",
+							"raw": "{{APP_URL}}/file/remove/33",
 							"host": [
-								"{{APP_URL}}file"
+								"{{APP_URL}}"
 							],
 							"path": [
+								"file",
 								"remove",
 								"33"
 							]

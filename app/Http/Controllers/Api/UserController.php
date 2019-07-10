@@ -59,6 +59,7 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequestAlias $request, $id)
     {
+        /** @var User $user */
         $user = Auth::user();
         $updatedData = $request->all();
 

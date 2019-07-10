@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property integer owner_id
+ * @property integer id
  * @property string url
  * @property string mime_type
  * @property string name_file

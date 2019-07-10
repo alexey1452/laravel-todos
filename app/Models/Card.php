@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer id
  */
 
-
 class Card extends Model
 {
 
