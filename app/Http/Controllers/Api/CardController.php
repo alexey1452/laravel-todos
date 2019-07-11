@@ -16,8 +16,10 @@ class CardController extends Controller
     public function index()
     {
         $userId = Auth::id();
-        $query = Card::query()->where('user_id', '=', $userId);
-        $cards = $query->get()->toArray();
+        $cards = Card::query()
+                    ->where('user_id',  $userId)
+                    ->get()
+                    ->toArray();
 
         return $this->successApiResponse($cards);
     }
@@ -31,10 +33,8 @@ class CardController extends Controller
     {
             $userId = Auth::id();
             $newCardData = $request->all();
-            $card = new Card();
             $newCardData['user_id'] = $userId;
-            $card->fill($newCardData);
-            $card->save();
+            $card = Card::create($newCardData);
 
             return $this->successApiResponse($card, 'Card success created');
     }
@@ -47,11 +47,7 @@ class CardController extends Controller
      */
     public function show($id)
     {
-        $card = Card::where('id', '=', $id)->first();
-
-        if(!$card) {
-            return $this->resourceNotFound();
-        }
+        $card = Card::where('id', $id)->firstOrFail();
 
         return $this->successApiResponse($card);
     }
@@ -65,15 +61,8 @@ class CardController extends Controller
      */
     public function update(CardRequestCreate $request, $id)
     {
-        $card = Card::where('id', '=', $id)->first();
-
-        if(!$card) {
-            $this->resourceNotFound();
-        }
-
-        $data = $request->all();
-        $card->fill($data);
-        $card->update($data);
+        $card = Card::where('id', $id)->firstOrFail();
+        $card->update($request->all());
 
         return $this->successApiResponse($card, 'Success update');
 
@@ -87,12 +76,7 @@ class CardController extends Controller
      */
     public function destroy($id)
     {
-        $card = Card::find($id);
-
-        if(!$card) {
-            $this->resourceNotFound();
-        }
-
+        $card = Card::findOrFail($id);
         $card->delete();
 
         return $this->successApiResponse();

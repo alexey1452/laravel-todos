@@ -26,7 +26,7 @@ class TasksRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'bail|required',
+            'name' => 'string|required',
             'card_id' => 'integer|required',
         ];
     }

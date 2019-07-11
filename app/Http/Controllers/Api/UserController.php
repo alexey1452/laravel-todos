@@ -42,11 +42,7 @@ class UserController extends Controller
     public function show($id)
     {
         /** @var User $user */
-        $user = $id === 'me' ? Auth::user() : User::find($id);
-
-        if(!$user){
-            return $this->resourceNotFound();
-        }
+        $user = $id === 'me' ? Auth::user() : User::findOrFail($id);
 
         return $this->successApiResponse(['user' => $user]);
     }
@@ -63,16 +59,11 @@ class UserController extends Controller
         $user = Auth::user();
         $updatedData = $request->all();
 
-        if(!$user) {
-            return $this->resourceNotFound();
-        }
-
         if(!empty($updatedData['password'])){
             $updatedData['password'] = Hash::make($updatedData['password']);
         }
 
-        $user->fill($updatedData);
-        $user->save();
+        $user->update($updatedData);
         
         return $this->successApiResponse([ 'user' => $user]);
 

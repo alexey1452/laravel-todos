@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Tasks extends Model
+
+class Task extends Model
 {
     protected $fillable = [
         'name',
@@ -17,4 +18,8 @@ class Tasks extends Model
         'created_at',
         'updated_at'
     ];
+
+    protected function card() {
+        return  $this->belongsTo(Card::class);
+    }
 }

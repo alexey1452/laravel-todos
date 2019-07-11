@@ -30,6 +30,7 @@ class File extends Model
     public function delete()
     {
         @unlink(public_path("/files/$this->name_file"));
-        return parent::delete();
+        parent::delete();
+        return true;
     }
 }

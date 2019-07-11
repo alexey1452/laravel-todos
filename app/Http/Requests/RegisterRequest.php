@@ -26,10 +26,10 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'password' => 'bail|required|min:6',
-            'email' => 'bail|required|email|max:255',
-            'first_name' => 'bail|required|max:255',
-            'last_name' => 'bail|required|max:255',
+            'password' => 'string|required|min:6',
+            'email' => 'string|required|email|max:255',
+            'first_name' => 'string|required|max:255',
+            'last_name' => 'string|required|max:255',
         ];
     }
 }

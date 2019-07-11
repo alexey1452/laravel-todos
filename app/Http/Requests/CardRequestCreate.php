@@ -26,8 +26,8 @@ class CardRequestCreate extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'bail|required|max:255',
-            'description' => 'bail|sometimes|max:500',
+            'name' => 'string|required|max:255',
+            'description' => 'string|sometimes|max:500',
             'image_id' => 'sometimes|integer|max:500',
         ];
     }

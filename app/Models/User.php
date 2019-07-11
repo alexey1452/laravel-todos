@@ -74,9 +74,7 @@ class User extends Authenticatable
 
     public function getAvatarUrlAttribute()
     {
-        if(!empty($this->avatar)) {
-            return $this->avatar->url;
-        }
+        return $this->avatar->url;
     }
 
     /**
@@ -94,8 +92,7 @@ class User extends Authenticatable
 
     public function verify()
     {
-        $this->confirmed_token = null;
-        return $this->save();
+        return $this->update(['confirmed_token' => null]);
     }
 
 }

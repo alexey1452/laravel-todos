@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property Tasks tasks
+ * @property Task tasks
  * @property integer id
  */
 
@@ -32,6 +32,6 @@ class Card extends Model
 
     public function tasks()
     {
-        return  $this->hasMany(Tasks::class, 'card_id');
+        return  $this->hasMany(Task::class);
     }
 }

@@ -45,8 +45,7 @@ class FileController extends Controller
                     'mime_type' => $image->mime(),
                     'name_file' => $fileName
                 ]);
-            $user->avatar_id = $avatar->id;
-            $user->save();
+            $user->update(['avatar_id' => $avatar->id]);
             return $this->successApiResponse();
         }
 
@@ -63,15 +62,10 @@ class FileController extends Controller
         /** @var User $user */
         $user = Auth::user();
         /** @var File $file */
-        $file = File::find($fileId);
-
-        if(!$file){
-            return $this->resourceNotFound();
-        }
+        $file = File::findOrFail($fileId);
 
         if($file->delete()){
-            $user->avatar_id = null;
-            $user->save();
+            $user->update(['avatar_id' => null]);
 
             return $this->successApiResponse();
         }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\TasksRequest;
-use App\Models\Tasks;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -18,8 +18,10 @@ class TasksController extends Controller
     public function index(Request $request)
     {
         $cardId = $request->card_id;
-        $query = Tasks::query()->where('card_id', '=', $cardId);
-        $tasks = $query->get()->toArray();
+        $tasks = Task::query()
+                        ->where('card_id',  $cardId)
+                        ->get()
+                        ->toArray();
 
         return $this->successApiResponse($tasks);
     }
@@ -34,9 +36,7 @@ class TasksController extends Controller
     {
         $data = $request->all();
         $data['complete'] = false;
-        $task = new Tasks();
-        $task->fill($data);
-        $task->save();
+        $task = Task::create($data);
 
         return $this->successApiResponse($task, 'Task success created');
     }
@@ -50,15 +50,9 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        /** @var Tasks $task */
-        $task = Tasks::where('id', '=', $id)->first();
-
-        if(!$task){
-            return $this->resourceNotFound();
-        }
-
-        $task->fill($request->all());
-        $task->update();
+        /** @var Task $task */
+        $task = Task::where('id', $id)->firstOrFail();
+        $task->update($request->all());
 
         return $this->successApiResponse($task, 'Task success updated');
     }
@@ -71,13 +65,8 @@ class TasksController extends Controller
      */
     public function destroy($id)
     {
-        /** @var Tasks $task */
-        $task = Tasks::find($id);
-
-        if(!$task) {
-            return $this->resourceNotFound();
-        }
-
+        /** @var Task $task */
+        $task = Task::findOrFail($id);
         $task->delete();
 
         return $this->successApiResponse();

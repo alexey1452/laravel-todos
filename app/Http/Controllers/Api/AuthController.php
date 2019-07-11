@@ -9,6 +9,7 @@ use App\Jobs\SendUserRegisterEmail;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 
 class AuthController extends Controller
@@ -21,13 +22,11 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        /** @var User $user */
-        $user = new User();
         $data = $request;
-        $data['password'] = Hash::make($data['password']);
-        $data['confirmed_token'] =  str_random(20);
-        $user->fill($data->all());
-        if($user->save()){
+        $data['password'] = Hash::make($request['password']);
+        $data['confirmed_token'] = Str::random(20);
+        $user = User::create($data->toArray());
+        if($user){
             dispatch(new SendUserRegisterEmail($user));
         }
         return $this->successApiResponse();
@@ -68,14 +67,8 @@ class AuthController extends Controller
     public function verifyUser($code)
     {
         /** @var User $user */
-        $user = User::query()->where('confirmed_token', '=', $code)->first();
-
-        if(!$user) {
-            return $this->resourceNotFound();
-        }
-
-        $user->confirmed_token = null;
-        $user->save();
+        $user = User::where('confirmed_token', $code)->firstOrFail();
+        $user->update(['confirmed_token' => null]);
 
         return $this->successApiResponse();
 
