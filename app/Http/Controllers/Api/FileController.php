@@ -47,9 +47,10 @@ class FileController extends Controller
                 ]);
             $user->avatar_id = $avatar->id;
             $user->save();
+            return $this->successApiResponse();
         }
 
-        return $this->successApiResponse();
+        return $this->errorApiResponse();
     }
 
 
