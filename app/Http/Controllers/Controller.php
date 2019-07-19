@@ -62,4 +62,15 @@ class Controller extends BaseController
 
         return response()->json($responseData, $code);
     }
+
+    public function invalidData($message = 'Bad request', $code = 422)
+    {
+
+        $responseData = [
+            'requestStatus' => 'invalid data',
+            'message' => $message
+        ];
+
+        return response()->json($responseData, $code);
+    }
 }

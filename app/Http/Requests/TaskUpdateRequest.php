@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CardRequestCreate extends FormRequest
+class TaskUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +26,8 @@ class CardRequestCreate extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'string|required|max:255',
-            'description' => 'string|sometimes|max:500',
-            'image_id' => 'sometimes|integer|max:500',
+            'title' => 'string|sometimes',
+            'completed' => 'boolean|sometimes',
         ];
     }
 }

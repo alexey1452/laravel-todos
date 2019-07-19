@@ -22,14 +22,17 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $data = $request;
-        $data['password'] = Hash::make($request['password']);
-        $data['confirmed_token'] = Str::random(20);
-        $user = User::create($data->toArray());
-        if($user){
+        $data = $request->only('email', 'first_name', 'last_name');
+        $data['password'] = Hash::make($request->get('password'));
+        $data['confirmation_token'] = Str::uuid();
+        $user = new User();
+        $user->fill($data);
+        if($user->save()){
             dispatch(new SendUserRegisterEmail($user));
+            return $this->successApiResponse();
         }
-        return $this->successApiResponse();
+
+        return $this->errorApiResponse();
     }
 
     /**
@@ -45,17 +48,13 @@ class AuthController extends Controller
             /** @var User $user */
             $user = Auth::user();
 
-            if($user->confirmed_token){
-                return $this->unauthorizedApiResponse('not verify email');
+            if(!$user->confirmed_at){
+                return $this->unauthorizedApiResponse('Not verified email');
             }
 
-            $tokenResult = $user->createToken(config('app.name'));
-            $token = $tokenResult->token;
-            $token->expires_at = now()->addDays(config('token_lifetime'));
-            $token->save();
+            $token = $user->createToken(config('app.name'))->accessToken;
 
-            $success['token'] = $tokenResult->accessToken;
-            $success['expires_at'] = $token->expires_at->toDateString();
+            $success['token'] = $token;
             $success['user'] = $user;
 
             return $this->successApiResponse($success, 'Success');
@@ -67,10 +66,10 @@ class AuthController extends Controller
     public function verifyUser($code)
     {
         /** @var User $user */
-        $user = User::where('confirmed_token', $code)->firstOrFail();
-        $user->update(['confirmed_token' => null]);
+        if($user = User::confirmationUser($code)){
+            return $this->successApiResponse();
+        }
 
-        return $this->successApiResponse();
-
+        return $this->resourceNotFound();
     }
 }

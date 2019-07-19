@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TasksRequest extends FormRequest
+class TasksCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class TasksRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'string|required',
+            'title' => 'string|required',
             'card_id' => 'integer|required',
         ];
     }

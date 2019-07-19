@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property Task tasks
  * @property integer id
+ * @property string title
+ * @property string description
  */
 
 class Card extends Model
 {
 
     protected $fillable = [
-        'name',
+        'title',
         'user_id',
-        'id',
         'description',
-        'image_id',
     ];
 
     protected $hidden = [
@@ -25,13 +25,20 @@ class Card extends Model
         'updated_at'
     ];
 
-    protected $with = [
-        'tasks'
-    ];
-
 
     public function tasks()
     {
         return  $this->hasMany(Task::class);
     }
+
+    public function getCardsByUserId($userId)
+    {
+        return $this->whereUserId($userId)->get()->toArray();
+    }
+
+    public function getCardById($id)
+    {
+        return $this->where('id', $id)->with('tasks')->first();
+    }
+
 }

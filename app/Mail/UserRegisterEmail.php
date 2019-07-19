@@ -19,7 +19,7 @@ class UserRegisterEmail extends Mailable
     private $link;
     public function __construct(User $user)
     {
-        $this->link = config('app.url') . '/api/verify/' . $user->confirmed_token;
+        $this->link = config('app.url') . '/api/verify/' . $user->confirmation_token;
     }
 
     /**

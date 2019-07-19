@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\TasksRequest;
+use App\Http\Requests\TasksCreateRequest;
+use App\Http\Requests\TaskUpdateRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,16 +13,14 @@ class TasksController extends Controller
     /**
      * Display a listing of the resource.
      * @param Request $request
+     * @param Task $task
      * @return \Illuminate\Http\Response
      */
 
-    public function index(Request $request)
+    public function index(Request $request, Task $task)
     {
-        $cardId = $request->card_id;
-        $tasks = Task::query()
-                        ->where('card_id',  $cardId)
-                        ->get()
-                        ->toArray();
+        /** @var Task $tasks */
+        $tasks = $task->getTasksByCardId($request->only('card_id'));
 
         return $this->successApiResponse($tasks);
     }
@@ -29,45 +28,57 @@ class TasksController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param TasksRequest $request
+     * @param TasksCreateRequest $request
+     * @param Task $task
      * @return \Illuminate\Http\Response
      */
-    public function store(TasksRequest $request)
+    public function store(TasksCreateRequest $request, Task $task)
     {
-        $data = $request->all();
-        $data['complete'] = false;
-        $task = Task::create($data);
+        $task->fill($request->only('title', 'card_id'));
 
-        return $this->successApiResponse($task, 'Task success created');
+        if ($task->save()) {
+            return $this->successApiResponse($task, 'Card successful created');
+        }
+
+        return $this->errorApiResponse();
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param  int $id
+     * @param TaskUpdateRequest $request
+     * @param int $id
+     * @param Task $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TaskUpdateRequest $request, $id, Task $task)
     {
         /** @var Task $task */
-        $task = Task::where('id', $id)->firstOrFail();
-        $task->update($request->all());
+        $currentTask = $task->getTaskById($id);
 
-        return $this->successApiResponse($task, 'Task success updated');
+        if(!$currentTask) {
+            return $this->resourceNotFound();
+        }
+
+        $currentTask->fill($request->only('title', 'completed'))->save();
+
+        return $this->successApiResponse($currentTask, 'Task success updated');
     }
 
 
     /**
-     * @param $id
+     * @param int $id
+     * @param Task $task
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy($id, Task $task)
     {
-        /** @var Task $task */
-        $task = Task::findOrFail($id);
-        $task->delete();
+        $removableTask = $task->getTaskById($id);
+
+        if(!$removableTask){
+            return $this->resourceNotFound();
+        }
+        $removableTask->delete();
 
         return $this->successApiResponse();
     }

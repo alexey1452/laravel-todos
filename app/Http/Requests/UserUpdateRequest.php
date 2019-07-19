@@ -44,13 +44,7 @@ class UserUpdateRequest extends FormRequest
                 'sometimes',
                 'string',
                 'min:6',
-            ],
-            'avatar_id' => [
-                'sometimes',
-                'integer',
-                'nullable',
-                'exists:files,id',
-            ],
+            ]
         ];
     }
 }

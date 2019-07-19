@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
@@ -13,8 +12,8 @@ use Laravel\Passport\HasApiTokens;
  * @property string first_name
  * @property string last_name
  * @property string email
- * @property integer avatar_id
- * @property string confirmed_token
+ * @property string confirmed_at
+ * @property string confirmation_token
  */
 
 class User extends Authenticatable
@@ -31,8 +30,8 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
-        'avatar_id',
-        'confirmed_token'
+        'confirmed_at',
+        'confirmation_token'
     ];
 
     /**
@@ -42,16 +41,16 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
-        'confirmed_token',
+        'confirmed_at',
         'updated_at',
         'created_at',
-        'confirmed_email',
-        'avatar_id'
+        'avatar_id',
+        'confirmation_token'
     ];
 
     protected $appends = [
-        'full_name'
+        'full_name',
+        'avatar_url'
     ];
 
     protected $with = [
@@ -74,7 +73,11 @@ class User extends Authenticatable
 
     public function getAvatarUrlAttribute()
     {
-        return $this->avatar->url;
+        if($this->avatar){
+            return env('APP_URL') . '/files/'.$this->avatar->filename;
+        }
+
+        return null;
     }
 
     /**
@@ -82,17 +85,27 @@ class User extends Authenticatable
      */
     public function avatar()
     {
-        return $this->hasOne( File::class, 'id', 'avatar_id');
+        return $this->hasOne( File::class);
     }
 
-    public function removeOldAvatar()
+    public function card()
+    {
+        return $this->hasMany( Card::class, 'id', 'user_id');
+    }
+
+    public function removeAvatar()
     {
         $this->avatar->delete();
     }
 
-    public function verify()
+    public static function confirmationUser($code)
     {
-        return $this->update(['confirmed_token' => null]);
+        $user = User::find($code);
+        if(!$user) {
+            return false;
+        }
+        return $user->fill(['confirmed_at' => now(), 'confirmation_token' => null ])->save();
+
     }
 
 }

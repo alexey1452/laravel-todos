@@ -3,34 +3,47 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File as Files;
 
 /**
  * @property integer owner_id
  * @property integer id
  * @property string url
  * @property string mime_type
- * @property string name_file
+ * @property string filename
  */
 
 class File extends Model
 {
+
+   public $primarykey = 'id';
+
    protected $fillable = [
-       'owner_id',
-       'url',
+       'user_id',
        'mime_type',
-       'name_file'
+       'filename'
+   ];
+
+   protected $hidden = [
+       'created_at',
+       'updated_at'
    ];
 
     protected $dates = [
         'created_at',
-        'updated_at',
+        'updated_at'
     ];
 
 
     public function delete()
     {
-        @unlink(public_path("/files/$this->name_file"));
+        Files::delete(public_path("/files/$this->filename"));
         parent::delete();
         return true;
+    }
+
+    public function getFileById($id)
+    {
+        return File::find($id);
     }
 }

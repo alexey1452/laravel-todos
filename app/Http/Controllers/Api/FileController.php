@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
 class FileController extends Controller
@@ -19,33 +20,34 @@ class FileController extends Controller
     public function uploadFile(Request $request)
     {
         if(!$request->hasFile('file')) {
-            return $this->resourceNotFound();
+            return $this->invalidData();
         }
 
         /** @var User $user */
         $user = Auth::user();
         $file = $request->file('file');
 
-        if($user->avatar_id) {
-            $user->removeOldAvatar();
+        if(!empty($user->avatar)) {
+            $user->removeAvatar();
         }
 
         $image = Image::make($file)->resize(400, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
 
-        $mimeType = $this->checkMimeType($image->mime());
-        $fileName = str_random(20) . $mimeType;
+        $mimeType = $this->convertMimeType($image->mime());
+        $filename = Str::random() . $mimeType;
 
-        if($image->save(public_path("/files/$fileName"))) {
+        if($image->save(public_path("/files/$filename"))) {
             /** @var File $avatar */
-            $avatar = File::create([
-                    'owner_id' => $user->id,
-                    'url' => "/files/$fileName",
-                    'mime_type' => $image->mime(),
-                    'name_file' => $fileName
-                ]);
-            $user->update(['avatar_id' => $avatar->id]);
+            $avatar = new File();
+            $avatar->fill([
+                'user_id' => $user->id,
+                'mime_type' => $image->mime(),
+                'filename' => $filename
+            ]);
+            $avatar->save();
+
             return $this->successApiResponse();
         }
 
@@ -55,18 +57,14 @@ class FileController extends Controller
 
     /**
      * @param $fileId
+     * @param File $file
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
      */
-    public function deleteFile($fileId){
-        /** @var User $user */
-        $user = Auth::user();
+    public function deleteFile($fileId, File $file){
         /** @var File $file */
-        $file = File::findOrFail($fileId);
+        $removableFile = $file->getFileById($fileId);
 
-        if($file->delete()){
-            $user->update(['avatar_id' => null]);
-
+        if($removableFile->delete()){
             return $this->successApiResponse();
         }
 
@@ -74,7 +72,7 @@ class FileController extends Controller
 
     }
 
-    public function checkMimeType ($mimeType) {
+    public function convertMimeType ($mimeType) {
         switch ($mimeType) {
             case 'image/jpeg':
                 return '.jpg';
