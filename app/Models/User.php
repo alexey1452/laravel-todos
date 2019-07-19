@@ -100,12 +100,11 @@ class User extends Authenticatable
 
     public static function confirmationUser($code)
     {
-        $user = User::find($code);
+        $user = User::where('confirmation_token', $code)->first();
         if(!$user) {
             return false;
         }
         return $user->fill(['confirmed_at' => now(), 'confirmation_token' => null ])->save();
-
     }
 
 }

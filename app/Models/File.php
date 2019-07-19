@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\File as Files;
+use Illuminate\Support\Facades\File as Storage;
 
 /**
  * @property integer owner_id
@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\File as Files;
 
 class File extends Model
 {
-
-   public $primarykey = 'id';
 
    protected $fillable = [
        'user_id',
@@ -37,7 +35,7 @@ class File extends Model
 
     public function delete()
     {
-        Files::delete(public_path("/files/$this->filename"));
+        Storage::delete(public_path("/files/$this->filename"));
         parent::delete();
         return true;
     }

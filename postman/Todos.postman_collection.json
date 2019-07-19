@@ -27,7 +27,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"first_name\": \"Test\",\n\t\"last_name\": \"Register\",\n\t\"password\": \"secret\",\n\t\"email\": \"test@email.com\"\n}"
+							"raw": "{\n\t\"first_name\": \"Test\",\n\t\"last_name\": \"Register\",\n\t\"password\": \"secret\",\n\t\"email\": \"web.developer1452@gmail.com\"\n}"
 						},
 						"url": {
 							"raw": "{{APP_URL}}/register",
@@ -72,7 +72,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"test@mail.com\",\n\t\"password\": \"secret\"\n}"
+							"raw": "{\n\t\"email\": \"web.developer1452@gmail.com\",\n\t\"password\": \"secret\"\n}"
 						},
 						"url": {
 							"raw": "{{APP_URL}}/login",
@@ -88,6 +88,9 @@
 				},
 				{
 					"name": "Get User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [
@@ -108,18 +111,15 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"url": {
-							"raw": "{{APP_URL}}/user/me",
+							"raw": "{{APP_URL}}/user/11",
 							"host": [
 								"{{APP_URL}}"
 							],
 							"path": [
 								"user",
-								"me"
+								"11"
 							]
 						}
 					},
@@ -183,7 +183,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"first_name\": \"dfsfsdf\",\n\t\"last_name\": \"dfdgdfe4\"\n}"
+							"raw": "{\n\t\"first_name\": \"new first\",\n\t\"last_name\": \"new last\"\n}"
 						},
 						"url": {
 							"raw": "{{APP_URL}}/user/me",
@@ -229,13 +229,18 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "name",
+									"key": "title",
 									"value": "Crad 1",
 									"type": "text"
 								},
 								{
 									"key": "description",
 									"value": "decription card 1",
+									"type": "text"
+								},
+								{
+									"key": "user_id",
+									"value": "1",
 									"type": "text"
 								}
 							]
@@ -278,25 +283,25 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "name",
-									"value": "update Crad 1",
+									"key": "title",
+									"value": "update Crad 4",
 									"type": "text"
 								},
 								{
 									"key": "description",
-									"value": "update decription card 1",
+									"value": "update decription card 4",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{APP_URL}}/card/1",
+							"raw": "{{APP_URL}}/card/4",
 							"host": [
 								"{{APP_URL}}"
 							],
 							"path": [
 								"card",
-								"1"
+								"4"
 							]
 						}
 					},
@@ -335,13 +340,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{APP_URL}}/card/1",
+							"raw": "{{APP_URL}}/card/4",
 							"host": [
 								"{{APP_URL}}"
 							],
 							"path": [
 								"card",
-								"1"
+								"4"
 							]
 						}
 					},
@@ -388,13 +393,16 @@
 				},
 				{
 					"name": "Show User Card List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
+								"value": "application/json",
 								"type": "text"
 							},
 							{
@@ -410,15 +418,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": ""
+							"raw": "{\n\t\"user_id\": \"11\"\n}"
 						},
 						"url": {
-							"raw": "{{APP_URL}}/card",
+							"raw": "{{APP_URL}}/card/",
 							"host": [
 								"{{APP_URL}}"
 							],
 							"path": [
-								"card"
+								"card",
+								""
 							]
 						}
 					},
@@ -453,7 +462,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"sdfsdfsdf\",\n\t\"card_id\": \"1\"\n}"
+							"raw": "{\n\t\"title\": \"new task\",\n\t\"card_id\": \"1\"\n}"
 						},
 						"url": {
 							"raw": "{{APP_URL}}/task",
@@ -491,16 +500,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"sdfsdfsfsdfdsdf\"\n}"
+							"raw": "{\n\t\"title\": \"updated\",\n\t\"completed\": true\n}"
 						},
 						"url": {
-							"raw": "{{APP_URL}}/task/2",
+							"raw": "{{APP_URL}}/task/1",
 							"host": [
 								"{{APP_URL}}"
 							],
 							"path": [
 								"task",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -572,7 +581,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"card_id\": 1\n}"
+							"raw": "{\n\t\"card_id\": \"1\"\n}"
 						},
 						"url": {
 							"raw": "{{APP_URL}}/task",
@@ -663,14 +672,14 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{APP_URL}}/file/remove/33",
+							"raw": "{{APP_URL}}/file/remove/3",
 							"host": [
 								"{{APP_URL}}"
 							],
 							"path": [
 								"file",
 								"remove",
-								"33"
+								"3"
 							]
 						}
 					},

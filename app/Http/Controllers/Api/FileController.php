@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File as Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
@@ -38,6 +39,12 @@ class FileController extends Controller
         $mimeType = $this->convertMimeType($image->mime());
         $filename = Str::random() . $mimeType;
 
+        $path = public_path('files');
+
+        if(!Storage::isDirectory($path)) {
+            Storage::makeDirectory($path, 0777, true, true);
+        }
+
         if($image->save(public_path("/files/$filename"))) {
             /** @var File $avatar */
             $avatar = new File();
@@ -48,7 +55,7 @@ class FileController extends Controller
             ]);
             $avatar->save();
 
-            return $this->successApiResponse();
+            return $this->successApiResponse($avatar);
         }
 
         return $this->errorApiResponse();
@@ -64,11 +71,12 @@ class FileController extends Controller
         /** @var File $file */
         $removableFile = $file->getFileById($fileId);
 
-        if($removableFile->delete()){
+        if($removableFile){
+            $removableFile->delete();
             return $this->successApiResponse();
         }
 
-        return $this->errorApiResponse();
+        return $this->resourceNotFound();
 
     }
 
